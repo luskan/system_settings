@@ -9,16 +9,17 @@ public class SwiftSystemSettingsPlugin: NSObject, FlutterPlugin {
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-      openSettings()
+    // In this v2 setup, we simply open settings regardless of the method call.
+    openSettings()
+    result(nil)
   }
 
   private func openSettings() {
-    if let url = URL(string: UIApplication.openSettingsURLString) {
-        if #available(iOS 10.0, *) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        } else {
-            UIApplication.shared.openURL(url)
-        }
+    guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+    if #available(iOS 10.0, *) {
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    } else {
+      UIApplication.shared.openURL(url)
     }
   }
 }
